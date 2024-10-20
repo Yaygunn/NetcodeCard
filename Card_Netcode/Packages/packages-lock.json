@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.matthewminer.consolation": {
+      "version": "https://github.com/mminer/consolation.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "2ad49b92f49317cf24d0727a0278ac9f5d8d1331"
+    },
     "com.unity.2d.animation": {
       "version": "9.1.2",
       "depth": 1,
