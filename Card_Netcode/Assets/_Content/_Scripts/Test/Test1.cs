@@ -35,8 +35,9 @@ namespace Yaygun.Test
         [ServerRpc]
         public void PerformActionServerRpc()
         {
-            //Debug.Log($"{NetworkObject.OwnerClientId} performed an action on the server.");
+            GameManager.Instance.IncreaseScoreServerRpc();
             Debug.Log($"{(int)OwnerClientId} performed an action on the server.");
+            
         }
         private void SetPos(Vector2 previousValue, Vector2 newValue)
         {
