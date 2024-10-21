@@ -16,7 +16,6 @@ namespace Yaygun
 
         private bool _isPlayTime;
 
-        NetworkVariable<int> score = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         private void OnEnable()
         {
             if(Instance == null)
@@ -30,10 +29,8 @@ namespace Yaygun
             }
         }
 
-        private void Initialiee()
-        {
-            score.OnValueChanged += PrintScore;
-        }
+        private void Initialiee() { }
+ 
 
         public int GetPlayerIndex(ulong playerID)
         {
@@ -56,16 +53,6 @@ namespace Yaygun
             }
 
             return 1;
-        }
-        [ServerRpc]
-        public void IncreaseScoreServerRpc()
-        {
-            score.Value++;
-        }
-
-        private void PrintScore(int previousValue, int newValue)
-        {
-            print(score.Value);
         }
 
         public void GiveDamage(ulong playerID, int damage)

@@ -18,18 +18,6 @@ namespace Yaygun
             if (!IsOwner)
                 return;
 
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                PerformActionServerRpc();
-            }
-        }
-
-        [ServerRpc]
-        public void PerformActionServerRpc()
-        {
-            GameManager.Instance.IncreaseScoreServerRpc();
-            Debug.Log($"{(int)OwnerClientId} performed an action on the server.");
-            GameManager.Instance.GiveDamage(OwnerClientId, 1);
         }
 
         [ServerRpc]
