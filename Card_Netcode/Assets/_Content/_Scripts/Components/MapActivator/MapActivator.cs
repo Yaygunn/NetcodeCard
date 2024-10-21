@@ -19,6 +19,12 @@ namespace Yaygun
             _map.transform.SetParent(null, false);
             _map.SetActive(true);
             _map = null;
+            Destroy(gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            EventHub.Ev_PlayerDataSet -= OnPlayerDataSet;
         }
     }
 }
