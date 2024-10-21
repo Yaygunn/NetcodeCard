@@ -44,6 +44,7 @@ namespace Yaygun
         public void GetPlayerIndexClientRpc(int value, ClientRpcParams clientRpcParams = default)
         {
             print("Client Value recieved from server : " + value);
+            PlayerData.Instance.SetPlayerData(value);
         }
         private int GetOwnerID()
         {
