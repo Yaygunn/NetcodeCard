@@ -71,6 +71,11 @@ namespace Yaygun
         public void GiveDamage(ulong playerID, int damage)
         {
             int damagedCharacter = GetDamageCharacterIndex(GetPlayerIndex(playerID));
+            GiveDamage(damagedCharacter, damage);
+        }
+
+        public void GiveDamage(int damagedCharacter, int damage)
+        {
             float healthRatio = _characters[damagedCharacter].GiveDamage(damage);
             FireHealthChangeEventClientRpc(damagedCharacter, healthRatio);
         }
@@ -100,6 +105,7 @@ namespace Yaygun
                 character.SetCardState(1);
                 character.SetPlayedCard(cardIndex);
                 FireCharacterCardChangeStateClientRpc(GetPlayerIndex(playerID), character.CardState);
+                TryStartDamageTime();
             }
         }
         [ClientRpc]
@@ -139,6 +145,37 @@ namespace Yaygun
         private Character GetCharacter(ulong playerID)
         {
             return _characters[GetPlayerIndex(playerID)];
+        }
+
+        private void TryStartDamageTime()
+        {
+            foreach (Character character in _characters)
+                if (character.CardState != 1)
+                    return;
+
+            _isPlayTime = false;
+            StartCoroutine(DamageTime());
+        }
+
+        private IEnumerator DamageTime()
+        {
+            yield return new WaitForSeconds(0.5f);
+            for (int i = 0; i < _characters.Length; i++) 
+            {
+                Character character = _characters[i];
+                character.SetCardState(2);
+                FireCharacterCardChangeStateClientRpc(i, character.CardState);
+                yield return new WaitForSeconds(0.2f);
+                GiveDamage(GetDamageCharacterIndex(i), GetCardDamage(character.PlayedCard));
+                yield return new WaitForSeconds(0.2f);
+            }
+            yield return new WaitForSeconds(0.5f);
+            StartCoroutine(StartPlayTime());
+        }
+
+        private int GetCardDamage(int card)
+        {
+            return ++card;
         }
     }
 }
