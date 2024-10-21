@@ -1,9 +1,9 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Yaygun.Test
+namespace Yaygun
 {
-	public class Test1 : NetworkBehaviour
+	public class PlayerNetworkController : NetworkBehaviour
 	{
         public override void OnNetworkSpawn()
         {
@@ -29,7 +29,6 @@ namespace Yaygun.Test
         {
             GameManager.Instance.IncreaseScoreServerRpc();
             Debug.Log($"{(int)OwnerClientId} performed an action on the server.");
-            
         }
 
         [ServerRpc]
