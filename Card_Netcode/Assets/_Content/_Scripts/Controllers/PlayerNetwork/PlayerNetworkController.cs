@@ -45,7 +45,7 @@ namespace Yaygun
         public void GetPlayerIndexClientRpc(int value, ClientRpcParams clientRpcParams = default)
         {
             print("Client Value recieved from server : " + value);
-            PlayerData.Instance.SetPlayerData(value);
+            PlayerData.Instance.SetPlayerData(value, this);
         }
         private int GetOwnerID()
         {
@@ -61,6 +61,18 @@ namespace Yaygun
                     TargetClientIds = new ulong[] { clientID }
                 }
             };
+        }
+
+        [ServerRpc]
+        public void PlayedCardServerRpc(int cardIndex, ServerRpcParams rpcParams = default)
+        {
+            GameManager.Instance.WantToPlayCard(OwnerClientId, cardIndex);
+        }
+
+        [ServerRpc]
+        public void WantToTakeBackCardServerRpc()
+        {
+            GameManager.Instance.WantToTakeBackCard(OwnerClientId);
         }
     }
 }
