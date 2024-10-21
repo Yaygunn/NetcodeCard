@@ -29,6 +29,7 @@ namespace Yaygun
         {
             GameManager.Instance.IncreaseScoreServerRpc();
             Debug.Log($"{(int)OwnerClientId} performed an action on the server.");
+            GameManager.Instance.GiveDamage(OwnerClientId, 1);
         }
 
         [ServerRpc]
