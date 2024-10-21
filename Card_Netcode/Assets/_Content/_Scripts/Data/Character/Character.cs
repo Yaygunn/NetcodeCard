@@ -4,6 +4,8 @@ namespace Yaygun
 	{
 		public int MaxHealth { get; } = 10;
 		public int Health { get; private set; }
+		public int CardState { get; private set; } = 2;
+		public int PlayedCard {  get; private set; }
 
 		public Character()
 		{
@@ -17,6 +19,16 @@ namespace Yaygun
 				Health = 0;
 
 			return (float)Health/MaxHealth;
+		}
+
+        public void SetCardState(int cardState)
+        {
+            CardState = cardState;
+        }
+
+        public void SetPlayedCard(int playedCard)
+		{
+			PlayedCard = playedCard;
 		}
 
 	}
