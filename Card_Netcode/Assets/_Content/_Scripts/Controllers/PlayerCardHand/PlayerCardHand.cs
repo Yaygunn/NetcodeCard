@@ -79,7 +79,6 @@ namespace Yaygun
         {
             _cards[0].SetActive(false);
             _cards[1].SetActive(false);
-            _cards[2].SetActive(false);
         }
 
         private void ResetPos()
