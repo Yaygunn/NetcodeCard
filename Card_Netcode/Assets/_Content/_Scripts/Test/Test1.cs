@@ -10,8 +10,14 @@ namespace Yaygun.Test
 
         public override void OnNetworkSpawn()
         {
+            if (IsOwner)
+            {
+                GetPlayerIndexServerRpc();
+            }
+
             _networkPosition.OnValueChanged += SetPos;
             _model = Instantiate(_model);
+            
         }
 
         private void Update()
@@ -29,6 +35,7 @@ namespace Yaygun.Test
             if (Input.GetKeyDown(KeyCode.C))
             {
                 PerformActionServerRpc();
+                //GetPlayerIndexServerRpc();
             }
         }
 
@@ -42,13 +49,36 @@ namespace Yaygun.Test
         private void SetPos(Vector2 previousValue, Vector2 newValue)
         {
             _model.transform.position = newValue;
-
-            print("owner id : " + GetOwnerID() );
         }
 
+        [ServerRpc]
+        public void GetPlayerIndexServerRpc(ServerRpcParams rpcParams = default)
+        {
+            ulong clientID = rpcParams.Receive.SenderClientId;
+            int valueToSend = GameManager.Instance.GetPlayerIndex(clientID);
+
+            GetPlayerIndexClientRpc(valueToSend, CreateClientRpcParams(clientID));
+        }
+
+        [ClientRpc]
+        public void GetPlayerIndexClientRpc(int value, ClientRpcParams clientRpcParams = default)
+        {
+            print("Client Value recieved from server : " + value);
+        }
         private int GetOwnerID()
         {
             return (int)OwnerClientId;
+        }
+
+        private ClientRpcParams CreateClientRpcParams(ulong clientID)
+        {
+            return new ClientRpcParams
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new ulong[] { clientID }
+                }
+            };
         }
     }
 }
